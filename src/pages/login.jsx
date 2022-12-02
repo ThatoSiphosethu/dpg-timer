@@ -1,39 +1,70 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
+import {Card, Form, Button, Alert} from 'react-bootstrap'
+import { Link, useHistory } from 'react-router-dom';
+import { useAuth } from '../contexts/authContext';
 
-const LogIn = (props) =>
-{
+export default function LogIn() {
     
-    const [email, setEmail] = useState('');
+    const emailRef = useRef();
 
-    const [password, setPassword] = useState('');
+    const passwordRef = useRef();
 
-    
+    const {login} = useAuth();
 
-    const handleSubmit = (e) => {
+    const [error, setError] = useState('')
+
+    const [loading, setLoading] = useState(false)
+
+    // const history = useHistory()
+
+
+    async function handleSubmit (e) {
         e.preventDefault();
-    }
 
-    // const handleChange = (e) => {
-    //     // const {name,value} = e.target;
-    //     // setState({[name] : value})
-    // }
+
+        try {
+            setError('')
+            setLoading(true)
+            await login(emailRef.current.value, passwordRef.current.value)
+            // history.push('/')
+        } 
+
+        catch {
+            setError ('Failed to log in')
+        }
+        setLoading(false)
+       
+    }
 
     return (
         <div className='auth-form'>
-            <h2>Log-In</h2>
-            <form className='login-form' onSubmit={handleSubmit}>
-                <label htmlFor = "email">Email</label> 
-                <input onChange={email => setEmail(email.value)} value={email} type="email" placeholder='email' id='email' name='email' required/>
+            <Card>
+                <Card.Body>
+                    <h2>Log In</h2>
+                   
+                    {error && <Alert variant='danger'>{error}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group id='email'>
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type='email' ref={emailRef} required/> 
+                        </Form.Group>
 
-                <label htmlFor = "password">Password</label> 
-                <input onChange={password => setPassword(password.value)} value={password} type="password" placeholder='password' id='password' name='password' required/>
+                        <Form.Group id='password'>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type='password' ref={passwordRef} required/> 
+                        </Form.Group>
 
-                <button onSubmit={handleSubmit}>Log In</button>
-            </form>
-            <button className='link-btn' onClick={() => props.onFormSwitch('register')}>Don't have an account? Register here!!</button>
+                       
+                        <Button disabled={loading} className='w-100' type='submit'>Log In</Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+          <div className='w-100 text-center mt-2'>
+            Need an account? <Link to='./register'>Sign Up Here</Link> 
+            </div> 
+
         </div>
     )
   
 }
  
-export default LogIn;

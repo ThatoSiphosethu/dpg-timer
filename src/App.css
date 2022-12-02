@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-image: linear-gradient(79deg, #7439db, #C66FCB 48%, #F7944D); */ 
+  background-image: linear-gradient(79deg, #7439db, #C66FCB 48%, #F7944D); 
 }
 
 .auth-form {
@@ -51,18 +51,19 @@ button {
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #d5d5d5;
-  /* padding: 5rem;
+  padding: 5rem;
   border: 1px solid black;
-  border-radius: 10px; */
+  border-radius: 10px;
   /* background: linear-gradient(#18f08b 50%, #16191e 50%); */
 }
 
 body {
   height: 100vh;
-  background: linear-gradient(#18f08b 50%, #16191e 50%);
+  background-image: linear-gradient(79deg, #7439db, #C66FCB 48%, #F7944D);
 }
 
-.container {
+
+/* .container {
   width: 90vw;
   max-width: 37.5em;
   background-color: #242831;
@@ -113,4 +114,4 @@ input[type='time'] {
   padding: 1em;
   font-size: 1.2em;
   letter-spacing: 0.05em;
-}
+} */

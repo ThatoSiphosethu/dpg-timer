@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import TimePicker from 'react-bootstrap-time-picker';
+import { Card, Form, Button, Container} from 'react-bootstrap'
+import NavigationBar from './navBar';
 
 
 
@@ -99,37 +101,52 @@ const ShiftCounter = () => {
 
 
     return ( 
-        <div className='time-card'>
-            <body>
-                <h1>DPG Time Tracker</h1>
-                <div className='container'>
-                    
+        <div>
+            <NavigationBar/>
 
-                        <div className='inp-wrapper'>
-                            <div className='time-wrapper'>
+        <div className='time-card'>
+
+
+            <Card>
+            <Card.Body>
+                <h2>DPG Time Tracker</h2>
+                <Form>
+                    
+                        <Form.Label>
+                        
+                            <div className='input-group mb-3'>
                             <label for="start-time" id='startTime' >Start Time: </label>  <TimePicker onChange = {time => handleStartTime(time) } 
                                     value = {startTime}
                             ></TimePicker>
                                 
                             </div>
 
-                            <div className='time-wrapper'>
+                            <div className='input-group mb-3'>
                             <label for="end-time" id='endTime'>End Time: </label> <TimePicker onChange = {time => handleEndTime(time) } 
                                     value = {endTime} ></TimePicker>
                             </div>
                             
-                        </div>
+                        </Form.Label>
                         
-                        <button id='calc' onClick={handleTimeDiff}>Submit</button>
+                </Form>
+                <Button className='w-100' onClick={handleTimeDiff}>Submit</Button>
 
-                        <div id='output'>
-                            <h3>You worked a total of : {message}</h3>
-                        </div>
-                </div>
-                
-            </body>
+            </Card.Body>
+
+            </Card>
+
+            <Card>
+                <Container>
+                    <div>
+                    <h3>You worked a total of : {message}</h3>
+                    </div>
             
+                </Container>
+            </Card>
+
+            </div>
         </div>
+        
      );
 }
  

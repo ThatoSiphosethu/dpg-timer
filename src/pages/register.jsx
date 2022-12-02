@@ -1,41 +1,79 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
+import {Card, Form, Button, Alert} from 'react-bootstrap'
+import { useAuth } from '../contexts/authContext';
+import { Link, useHistory } from 'react-router-dom';
 
-const Register = (props) =>
-{
-    const [email, setEmail] = useState('');
+export default function Register() {
+    
+    const emailRef = useRef();
 
-    const [password, setPassword] = useState('');
+    const passwordRef = useRef();
 
-    const [userName, setUserName] = useState('');
+    const passwordConfirmationRef = useRef();
 
-    const handleSubmit = (e) => {
+    const {signup} = useAuth();
+
+    const [error, setError] = useState('')
+
+    const [loading, setLoading] = useState(false)
+
+    // const history = useHistory()
+
+
+    async function handleSubmit (e) {
         e.preventDefault();
-    }
 
-    // const handleChange = (e) => {
-    //     const {name,value} = e.taret;
-    //     this.setState({[name] : value})
-    // }
+        if (passwordRef.current.value !== passwordConfirmationRef.current.value) {
+            return setError ('Passwords do not match')
+        }
+
+        try {
+            setError('')
+            setLoading(true)
+            await signup(emailRef.current.value, passwordRef.current.value)
+            // history.push('/')
+        }
+
+        catch {
+            setError ('Failed to create an account')
+        }
+        setLoading(false)
+       
+    }
 
     return (
         <div className='auth-form'>
-            <h2>Create Account</h2>
-            <form className='register-form' onSubmit={handleSubmit}>
-                <label htmlFor = "userName">User Name</label> 
-                <input onChange={userName => setUserName(userName.value)} value={userName} type="userName" placeholder='Username' id='userName' name='userName' required/>
+            <Card>
+                <Card.Body>
+                    <h2>Create Account</h2>
+                   
+                    {error && <Alert variant='danger'>{error}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group id='email'>
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type='email' ref={emailRef} required/> 
+                        </Form.Group>
 
-                <label htmlFor = "email">Email</label> 
-                <input onChange={password => setPassword(password.value)} value={email} type="email" placeholder='email' id='email' name='email' required/>
+                        <Form.Group id='password'>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type='password' ref={passwordRef} required/> 
+                        </Form.Group>
 
-                <label htmlFor = "password">Password</label> 
-                <input onChange={password => setPassword(password.value)} value={password} type="password" placeholder='password' id='password' name='password' required/>
+                        <Form.Group id='password-confirm'>
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control type='password' ref={passwordConfirmationRef} required/> 
+                        </Form.Group>
 
-                <button onSubmit={handleSubmit}>Submit</button>
-            </form>
-            <button className='link-btn' onClick={() => props.onFormSwitch('LogIn')}>Already have an account? Log-in here!!</button>
+                        <Button disabled={loading} className='w-100' type='submit'>Sign Up</Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+           <div>
+           Already have an account? <Link to='./login'>Log In Here </Link> 
+           </div>
+
         </div>
     )
   
 }
  
-export default Register;

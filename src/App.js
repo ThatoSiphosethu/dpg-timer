@@ -1,40 +1,36 @@
-import React, {useState} from 'react';
-import './App.css';
+import React from 'react';
+import { Container } from 'react-bootstrap';
+import { AuthProvider } from './contexts/authContext';
 import LogIn from './pages/login';
 import Register from './pages/register';
-// import { Route} from 'react-router-dom'
-// import NavBar from './components/navBar'
-// import Clock from './components/clock'
+import Clock from './components/clock';
+import { BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
+import './App.css';
 
 function App() {
 
-  const [currentForm, setCurrentForm] = useState('LogIn');
-
-  const toggleForm = (formName) => {
-    setCurrentForm(formName);
-  }
-
   return (
-    <div className="App">
-      <div>
-          {/* <NavBar/> */}
+  
+    
+      <Container className='d-flex align-items-center justify-content-center' style={{minHeight: '100vh'}}>
 
-          <div className='content'>
-            {/* <Route path="/home" component={Clock}/> */}
-            {/* <Route path="/admin" component={Dashboard}/>
-            <Route path="/login" component={LogIn}/>
-            <Route path="/register" component={Register}/> */}
-          </div>
-
-
-          {/* <Clock/> */}
-          {
-            currentForm === "LogIn" ? <LogIn onFormSwitch={toggleForm} /> : <Register  onFormSwitch={toggleForm} />
-          } 
-      </div>    
-    </div>
-  );
+        <div className='w-100' style={{maxWidth: '500px'}}>
+          <Router>
+          <AuthProvider>
+            <Switch>
+              <Route exact='/' component={Clock}/>
+              <Route path='/register' component={Register}/>
+              <Route path='/login' component={LogIn}/>
+            </Switch>
+          </AuthProvider>
+          </Router>
+         
+        </div>
+      
+      </Container>
+    
+  )
 }
 
 export default App;
